@@ -33,13 +33,12 @@ class MainActivity : AppCompatActivity() {
         buttons.forEach {
             val time = it.value
             it.key.setOnClickListener {
-                // start timer
-                doTimer(time)
+                startTimer(time)
             }
         }
     }
 
-    private fun doTimer(time: Int) {
+    private fun startTimer(time: Int) {
 
         val intent = Intent(this, TimerActivity::class.java).apply {
             putExtra(TIME_EXTRA, time)
