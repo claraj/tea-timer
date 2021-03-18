@@ -6,6 +6,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.WindowManager
 import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -32,6 +33,10 @@ class TimerActivity : AppCompatActivity() {
         timeText = findViewById(R.id.countdown)
         cancelFab = findViewById(R.id.cancelFab)
 
+        // keep screen on
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
         val minutes = intent.getIntExtra(MainActivity.TIME_EXTRA, 0)
 
         val ms = (minutes * 60 * 1000).toLong()
@@ -49,20 +54,21 @@ class TimerActivity : AppCompatActivity() {
         timer.start()
 
         cancelFab.setOnClickListener {
-            shutUp()
+            endTimerActivity()
         }
     }
 
-    private fun shutUp() {
+    private fun endTimerActivity() {
         timer.cancel()
         ringtone.stop()
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         this.finish()
 
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        shutUp()
+        endTimerActivity()
     }
 
     private fun displayTimeLeft(milliseconds: Long) {
